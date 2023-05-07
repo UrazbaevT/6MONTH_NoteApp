@@ -14,6 +14,6 @@ interface NoteDao {
 
     fun editNote(noteEntity: NoteEntity)
 
-    fun remoteNote(noteEntity: NoteEntity)
+    fun removeNote(noteEntity: NoteEntity)
 
 }

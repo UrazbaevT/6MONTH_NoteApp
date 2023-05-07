@@ -1,15 +1,17 @@
 package com.example.a6monthlesson1.domain.repositories
 
+import com.example.a6monthlesson1.domain.Resource
 import com.example.a6monthlesson1.domain.model.Note
+import kotlinx.coroutines.flow.Flow
 
 interface NoteRepository {
 
-    fun createNote(noteEntity: Note)
+    fun createNote(noteEntity: Note): Flow<Resource<Unit>>
 
-    fun getAllNotes(): List<Note>
+    fun getAllNotes(): Flow<Resource<List<Note>>>
 
-    fun editNote(noteEntity: Note)
+    fun editNote(noteEntity: Note): Flow<Resource<Unit>>
 
-    fun remoteNote(noteEntity: Note)
+    fun removeNote(noteEntity: Note): Flow<Resource<Unit>>
 
 }
