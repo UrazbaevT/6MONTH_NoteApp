@@ -1,4 +1,4 @@
-package com.example.a6monthlesson1.presentation.ui.fragments.listofnote
+package com.example.a6monthlesson1.presentation.ui.fragments.addeditnote
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,38 +10,48 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.a6monthlesson1.databinding.FragmentListOfNoteBinding
+import com.example.a6monthlesson1.R
+import com.example.a6monthlesson1.databinding.FragmentCreateEditBinding
 import com.example.a6monthlesson1.domain.model.Note
 import com.example.a6monthlesson1.presentation.utils.UIState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.*
 
 @AndroidEntryPoint
-class ListOfNoteFragment : Fragment() {
+class CreateEditFragment : Fragment() {
 
-    private lateinit var binding: FragmentListOfNoteBinding
-    private val viewModel by viewModels<ListOfNoteViewModel>()
-//    private val viewModel: ListOfNoteViewModel by viewModels()
+    private lateinit var binding: FragmentCreateEditBinding
+    private val viewModel by viewModels<CreateEditViewModel>()
+
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentListOfNoteBinding.inflate(inflater, container, false)
+        binding = FragmentCreateEditBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getAllNotes()
+        initClickers()
 
     }
 
-    private fun getAllNotes() {
-        viewModel.getAllNotes()
+    private fun initClickers() {
+        binding.createEditBtn.setOnClickListener{
+                createNote(Note(title = binding.titleEt.text.toString(), desc = binding.descEt.text.toString()))
+                //editNote()
+        }
+    }
+
+    private fun createNote(note: Note) {
+        viewModel.createNote(note)
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.getAllNotesState.collect { state ->
+                viewModel.createNoteState.collect { state ->
                     when (state) {
                         is UIState.Empty -> {}
                         is UIState.Error -> {
@@ -51,20 +61,21 @@ class ListOfNoteFragment : Fragment() {
                         is UIState.Loading -> {
                             //show progress bar
                         }
+
                         is UIState.Success -> {
-                            //set list to adapter
+                            //add note to list
+
                         }
                     }
                 }
             }
         }
     }
-
-    private fun removeNote(note: Note) {
-        viewModel.removeNote(note)
+    private fun editNote(note: Note) {
+        viewModel.editNote(note)
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.removeNoteState.collect { state ->
+                viewModel.editNoteState.collect { state ->
                     when (state) {
                         is UIState.Empty -> {}
                         is UIState.Error -> {
@@ -76,7 +87,7 @@ class ListOfNoteFragment : Fragment() {
                         }
 
                         is UIState.Success -> {
-                            //remove in  dao
+                            //edit note
                         }
                     }
                 }

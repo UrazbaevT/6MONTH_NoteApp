@@ -6,8 +6,8 @@ import javax.inject.Inject
 
 class EditNoteUseCase @Inject constructor(
     private val noteRepository: NoteRepository
-    ) {
+) {
 
-        fun removeNote(note: Note) = noteRepository.removeNote(note)
+    fun editNote(note: Note) = noteRepository.removeNote(note)
 
-    }
+}

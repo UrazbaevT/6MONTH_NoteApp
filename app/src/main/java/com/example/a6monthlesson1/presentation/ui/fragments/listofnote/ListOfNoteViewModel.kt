@@ -23,6 +23,9 @@ class ListOfNoteViewModel @Inject constructor(
     val getAllNotesState = _getAllNotesState.asStateFlow()
 //    val getAllNotesState: StateFlow<UIState<List<Note>>> = _getAllNotesState
 
+    private val _removeNoteState = MutableStateFlow<UIState<Unit>>(UIState.Empty())
+    val removeNoteState = _removeNoteState.asStateFlow()
+
     fun getAllNotes() {
         viewModelScope.launch {
             getAllNotesUseCase.getAllNotes().collect { res ->
@@ -38,6 +41,28 @@ class ListOfNoteViewModel @Inject constructor(
                         _getAllNotesState.value = UIState.Success(res.data)
                     }
                 }
+            }
+        }
+    }
+
+    fun removeNote(note: Note) {
+        viewModelScope.launch {
+            removeNoteUseCase.removeNote(note).collect() { res ->
+                when (res) {
+                    is Resource.Error -> {
+                        _removeNoteState.value = UIState.Error(res.message!!)
+                    }
+
+                    is Resource.Loading -> {
+                        _removeNoteState.value = UIState.Loading()
+                    }
+
+                    is Resource.Success -> {
+                        if (res.data != null)
+                            _removeNoteState.value = UIState.Success(Unit)
+                    }
+                }
+
             }
         }
     }
