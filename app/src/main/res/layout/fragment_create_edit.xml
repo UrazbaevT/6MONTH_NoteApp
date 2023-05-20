@@ -5,6 +5,15 @@
     android:orientation="vertical"
     android:gravity="center">
 
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/progress_bar"
+        android:layout_width="400dp"
+        android:indeterminate="true"
+        android:layout_height="400dp"
+        android:indeterminateTint="@color/red"
+        />
+
     <EditText
         android:id="@+id/title_et"
         android:layout_width="match_parent"
