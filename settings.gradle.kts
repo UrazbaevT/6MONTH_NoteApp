@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "6MONTH LESSON1"
-include ':app'
+include(":app")

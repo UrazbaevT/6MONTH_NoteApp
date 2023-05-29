@@ -1,77 +1,74 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
-    id 'com.google.dagger.hilt.android'
+    id(Plugins.AGP.application)
+    id(Plugins.Kotlin.android)
+    id(Plugins.DaggerHilt.hilt)
+    id(Plugins.Kotlin.kapt)
 }
 
 android {
-    namespace 'com.example.a6monthlesson1'
-    compileSdk 33
-
+    compileSdk = AppConfig.compileSdk
     defaultConfig {
-        applicationId "com.example.a6monthlesson1"
-        minSdk 24
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        applicationId = "com.example.lesson1month8"
+        minSdk = AppConfig.minSdk
+        targetSdk = AppConfig.targetSdk
+        versionCode = AppConfig.versionCode
+        versionName = AppConfig.versionName
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = AppConfig.TestInstrumentation
     }
 
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = AppConfig.jvmTarget
     }
-    buildFeatures{
-        viewBinding true
+    buildFeatures {
+        viewBinding = true
     }
 }
 
-dependencies {
+dependencies {//
 
-    implementation 'androidx.core:core-ktx:1.10.1'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation (Deps.Ui.core)
+    implementation (Deps.Ui.appcompat)
+    implementation (Deps.Ui.material)
+    implementation (Deps.Ui.constraint)
+    testImplementation (Deps.Ui.junit)
+    androidTestImplementation (Deps.Ui.extJunit)
+    androidTestImplementation (Deps.Ui.espresso)
+
 
     // Room
-    def room_version = "2.5.1"
-    implementation("androidx.room:room-runtime:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
+    implementation(Deps.Room.runtime)
+    kapt(Deps.Room.compiler)
+    implementation(Deps.Room.ktx)
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation(Deps.Coroutines.android)
+    implementation(Deps.Coroutines.core)
 
     // Hilt
-    implementation "com.google.dagger:hilt-android:2.46"
-    implementation "com.google.dagger:hilt-core:2.46"
-    kapt "com.google.dagger:hilt-compiler:2.46"
+    implementation (Deps.DaggerHilt.android)
+    implementation (Deps.DaggerHilt.core)
+    kapt (Deps.DaggerHilt.compiler)
+
+    //navgraph
+
+    implementation (Deps.NavGraph.fragment)
+    implementation (Deps.NavGraph.ui)
 
     // Lifecycle
-    def lifecycle_version = "2.6.1"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation (Deps.Lifecycle.viewModel)
+    implementation (Deps.Lifecycle.runtime)
 
     //Fragment
-    implementation "androidx.fragment:fragment-ktx:1.5.7"
-
-    //nav_graph
-    def nav_version = "2.5.3"
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation (Deps.Ui.fragment)
 }
